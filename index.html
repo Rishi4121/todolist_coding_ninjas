@@ -20,8 +20,9 @@
         text-align: center;
     }
     input[type="text"] {
-        width: 100%;
+        width: 95%;
         padding: 10px;
+        margin-right: 50px;
         margin-bottom: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
@@ -53,29 +54,47 @@
     <input type="text" id="taskInput" placeholder="Add new task...">
     <button onclick="addTask()">Add</button>
     <ul id="taskList"></ul>
+    <p id="taskCount">Total tasks: <span id="totalCount">0</span></p>
 </div>
 
 <script>
     function addTask() {
         var taskInput = document.getElementById("taskInput");
         var taskList = document.getElementById("taskList");
+        var taskCount = document.getElementById("totalCount");
 
         if (taskInput.value.trim() !== "") {
             var li = document.createElement("li");
-            li.textContent = taskInput.value;
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+
+            li.appendChild(checkbox);
+
+            var taskText = document.createElement("span");
+            taskText.textContent = taskInput.value;
+            li.appendChild(taskText);
 
             var removeButton = document.createElement("button");
             removeButton.textContent = "Remove";
             removeButton.onclick = function() {
-                li.parentNode.removeChild(li);
+                taskList.removeChild(li);
+                updateTaskCount();
             };
 
             li.appendChild(removeButton);
             taskList.appendChild(li);
             taskInput.value = "";
+
+            updateTaskCount();
         }
     }
-</script>
 
+    function updateTaskCount() {
+        var taskCount = document.getElementById("totalCount");
+        var taskList = document.getElementById("taskList");
+        var tasks = taskList.getElementsByTagName("li");
+        taskCount.textContent = tasks.length;
+    }
+</script>
 </body>
 </html>
